@@ -7,8 +7,6 @@
 		var start = false;
 		
 		function requestPurchase() {
-			console.log('CALL REQUEST PURCHASE');
-			
 			var productId = $('#items').val();
 			alert(productId);
 			
@@ -20,22 +18,23 @@
 					if (data.event == 'onRequestPurchaseResponse') {
 						$('#log').append('<p> productId = '+ data.productId +'</p>');
 						$('#log').append('<p> responseCode = '+ data.responseCode +'</p>');
+						$('#log').append('------------------------------');
 					} else if (data.event == 'onPurchaseStateChange') {
 						$('#log').append('<p> purchaseState = '+ data.purchaseState +'</p>');
+						$('#log').append('------------------------------');
 					}
 				},
 				function(f) {
 					$('#log').append('<p>requestPurchase: FAILED</p>');
+					$('#log').append('------------------------------');
 				},
 				productId
 			);
 		}
 		
 		function getPurchasedItems() {
-			console.log('CALL GET PURCHASED ITEMS');
 			window.plugins.CallbackBillingPlugin.getPurchasedItems(
 				function(s) {
-					console.log('succeed');
 					var data = $.parseJSON(s);
 					$('#log').append('<p>getPurchasedItems: status = ' + data.status + '</p>');
 					if (data.status == 'OK') {
@@ -48,25 +47,25 @@
 						update = 'No owned items found';
 					}
 					$('#log').append(update);
+					$('#log').append('------------------------------');
 				},
 				function(f) {
-					console.log('failed');
 					$('#log').append('<p>getPurchasedItems: FAILED</p>');
 					$('#log').append('<p>getPurchasedItems: '+ f +'</p>');
+					$('#log').append('------------------------------');
 				}
 			);
 		}
 		
 		function restoreDatabase() {
-			console.log('CALL RESTORE DATABASE');
 			window.plugins.CallbackBillingPlugin.restoreDatabase(
 				function(s) {
-					console.log('restoreDatabase: succeed');
 					$('#log').append('<p>restoreDatabase: SUCCEED</p>');
+					$('#log').append('------------------------------');
 				},
 				function(f) {
-					console.log('restoreDatabase: failed');
 					$('#log').append('<p>restoreDatabase: FAILED</p>');
+					$('#log').append('------------------------------');
 				}
 			);
 		}
@@ -78,48 +77,9 @@
 	    function onDeviceReady() {
 	    	console.log('device ready');
 	    	
-			//document.addEventListener("onPurchaseStateChange", onPurchaseStateChange, false);
-
-			//document.addEventListener("onRequestPurchaseResponse", onRequestPurchaseResponse, false);
-
-			//document.addEventListener("onRestoreTransactionsResponse", onRestoreTransactionsResponse, false);
-			
 	    	restoreDatabase();
 	    }
 	    
-	    function onPurchaseStateChange(result) {
-	    	console.log('======== onPurchaseStateChange ===========');
-	    	console.log(result);
-	    	return 1;
-	    }
-
-	    function onRequestPurchaseResponse(result) {
-	    	console.log('======== onRequestPurchaseResponse ===========');
-	    	console.log(result);
-	    	return 1;
-	    }
-
-	    function onRestoreTransactionsResponse(result) {
-	    	console.log('======== onRestoreTransactionsResponse ===========');
-	    	console.log(result);
-	    	
-	    	return 1;
-	    }
-
-	    function callTest() {
-			window.plugins.CallbackBillingPlugin.test(
-				function(s) {
-					console.log('restoreDatabase: succeed');
-				},
-				function(f) {
-					console.log('restoreDatabase: failed');
-				}
-			);
-	    }
-	    
-	    function test() {
-	    	console.log("THIS IS A TEST MESSAGE");
-	    }
 	    </script>
 	</head>
 	<body>
@@ -133,7 +93,6 @@
 		</select>
 		<input type="button" name="List" value="List" onclick="getPurchasedItems();"/>
 		
-		<input type="button" name="test" value="TEST" onclick="callTest();"/>
 		<div id="log"></div>
 	</body>
 </html>
